@@ -1,0 +1,40 @@
+# devKeysightSignalGenerator.proto
+# Proto file for the Keysight 34461A Multimeter
+# Mehmet Bozdogan 02/05/2018
+#
+################################################################################
+Terminator = LF;
+ReadTimeout = 100;
+WriteTimeout = 100;
+PollPeriod = 100;
+ReplyTimeout = 1000;
+LockTimeout = 5000;
+ExtraInput = Ignore;
+
+debug {
+        out "%s";
+        in "%39c";
+}
+
+getIdn {
+        out "*IDN?";
+        in "%39c";
+}
+
+meas {
+        out "READ?";
+        in "%e";
+}
+
+getMode {
+        out "CONF?";
+        in "\"%{VOLT|CURR}%(\$1:Elc_Flw_Type_RB){ |:AC }%*39c";
+}
+
+setMode {
+	out "CONF:%{VOLT|CURR}:%(\$1:Elc_Flw_Type_SP){DC|AC}";
+}
+
+setType {
+	out "CONF:%(\$1:Mode_SP){VOLT|CURR}:%{DC|AC}";
+}

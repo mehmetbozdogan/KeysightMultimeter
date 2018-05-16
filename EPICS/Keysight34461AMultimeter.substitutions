@@ -1,0 +1,18 @@
+# Keysight34461AMultimeter.substitutions
+# Template file for the Keysight 34461A Multimeter
+# Mehmet Bozdogan 02/05/2018
+#
+# substitutions:
+# sys    - system
+# sec    - section
+# dev    - device
+# $(sys)-$(sec)-$(dev) - device port(devPort)
+#
+#
+################################################################################
+file devKeysight34461AMultimeter.template
+{
+	pattern
+	{ sys	sec	dev	}
+	{ TEST	TEST	DMM01	}
+}
