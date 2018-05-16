@@ -1,0 +1,72 @@
+# devKeysightSignalGenerator.proto
+# Proto file for the Keysight Signal Generator
+# Mehmet Bozdogan 25/03/2018
+#
+################################################################################
+Terminator = LF;
+ReadTimeout = 100;
+WriteTimeout = 100;
+PollPeriod = 100;
+ReplyTimeout = 1000;
+LockTimeout = 5000;
+ExtraInput = Ignore;
+
+debug {
+        out "%s";
+        in "%39c";
+}
+
+getIdn {
+        out "*IDN?";
+        in "%39c";
+}
+
+getErr {
+        out "SYST:ERR?";
+        in "%39c";
+}
+
+getFreq {
+	out "FREQ:CW?";
+	in "%f";
+}
+
+setFreq {
+        out "FREQ %f GHz";
+}
+
+getdBm {
+	out "POW:AMPL?";
+	in "%e";
+}
+
+setdBm {
+        out "POW:AMPL %f dBm";
+}
+
+reset {
+	out "*RST";
+}
+
+clear {
+        out "*CLS";
+}
+
+
+getOpc {
+	out "*OPC?";
+	in "%{0|1}";
+}
+
+getStatus {
+	out "OUTP:STAT?";
+	in "%{0|1}";
+}
+
+switch {
+	out "OUTP:STAT %{OFF|ON}";
+}
+
+setAlc {
+	out "POW:ALC %{OFF|ON}";
+}

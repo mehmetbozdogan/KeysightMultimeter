@@ -1,0 +1,128 @@
+# devKeysightSignalGenerator.template
+# Template database for the Keysight Signal Generator
+# Mehmet Bozdogan 25/03/2018
+#
+# substitutions:
+# sys    - system
+# sec    - section
+# dev    - device
+# port   - $(sys):$(sec):$(dev) device port
+#
+#
+################################################################################
+record(stringin, "$(sys):$(sec):$(dev):Dbg")
+{
+        field(DESC, "$(dev) debug")
+        field(DTYP, "stream")
+        field(INP,  "@devKeysightSignalGenerator.proto debug $(sys):$(sec):$(dev)")
+}
+record(stringin, "$(sys):$(sec):$(dev):Idn")
+{
+	field(DESC, "$(dev) identification")
+	field(DTYP, "stream")
+	field(INP,  "@devKeysightSignalGenerator.proto getIdn $(sys):$(sec):$(dev)")
+	field(PINI, "YES")
+}
+record(stringin, "$(sys):$(sec):$(dev):Err")
+{
+        field(DESC, "$(dev) error")
+        field(DTYP, "stream")
+        field(INP,  "@devKeysightSignalGenerator.proto getErr $(sys):$(sec):$(dev)")
+        field(PINI, "YES")
+}
+record(ao, "$(sys):$(sec):$(dev):Freq_SP")
+{
+        field(DESC, "$(dev) freq setPoint")
+        field(DTYP, "stream")
+        field(OUT,  "@devKeysightSignalGenerator.proto setFreq $(sys):$(sec):$(dev)")
+	field(EGU, "GHz")
+        field(DRVH, "$(drvhF)")
+        field(DRVL, "$(drvlF)")
+        field(HOPR, "$(drvhF)")
+        field(LOPR, "$(drvlF)")
+}
+record(ai, "$(sys):$(sec):$(dev):Freq_RB")
+{
+        field(DESC, "$(dev) freq readBack")
+        field(DTYP, "stream")
+        field(INP,  "@devKeysightSignalGenerator.proto getFreq $(sys):$(sec):$(dev)")
+        field(EGU, "Hz")
+        field(HOPR, "$(drvhF)")
+        field(LOPR, "$(drvlF)")
+        field(SCAN, "1 second")
+}
+
+record(ao, "$(sys):$(sec):$(dev):dBm_SP")
+{
+        field(DESC, "$(dev) Db setPoint")
+        field(DTYP, "stream")
+        field(OUT,  "@devKeysightSignalGenerator.proto setdBm $(sys):$(sec):$(dev)")
+        field(EGU, "dBm")
+        field(DRVH, "$(drvhDb)")
+        field(DRVL, "$(drvlDb)")
+        field(HOPR, "$(drvhDb)")
+        field(LOPR, "$(drvlDb)")
+}
+record(ai, "$(sys):$(sec):$(dev):dBm_RB")
+{
+        field(DESC, "$(dev) Db readBack")
+        field(DTYP, "stream")
+        field(INP,  "@devKeysightSignalGenerator.proto getdBm $(sys):$(sec):$(dev)")
+        field(EGU, "dBm")
+        field(HOPR, "$(drvhDb)")
+        field(LOPR, "$(drvlDb)")
+	field(SCAN, "1 second")
+	field(FLNK, "$(sys):$(sec):$(dev):Vol_RB")
+}
+record(calc, "$(sys):$(sec):$(dev):Vol_RB")
+{
+        field(DESC, "$(dev) Volts readBack")
+	field(INPA, "$(sys):$(sec):$(dev):dBm_RB")
+	field(CALC, "(10^((A-10)/20))/SQR(2)")
+        field(EGU, "V")
+}
+record(bi, "$(sys):$(sec):$(dev):Stat") {
+        field(DESC, "$(dev) status info")
+        field(DTYP, "stream")
+        field(INP, "@devKeysightSignalGenerator.proto getStatus $(sys):$(sec):$(dev)")
+        field(SCAN, "1 second")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+}
+record(bo, "$(sys):$(sec):$(dev):Enbl") {
+        field(DESC, "$(dev) RF off/on")
+        field(DTYP, "stream")
+        field(OUT, "@devKeysightSignalGenerator.proto switch $(sys):$(sec):$(dev)")
+        field(SCAN, "Passive")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+}
+record(bo, "$(sys):$(sec):$(dev):Rst") {
+        field(DESC, "$(dev) reset")
+        field(DTYP, "stream")
+        field(OUT, "@devKeysightSignalGenerator.proto reset $(sys):$(sec):$(dev)")
+        field(SCAN, "Passive")
+}
+record(bo, "$(sys):$(sec):$(dev):Clr") {
+        field(DESC, "$(dev) Clear All Status")
+        field(DTYP, "stream")
+        field(OUT, "@devKeysightSignalGenerator.proto clear $(sys):$(sec):$(dev)")
+        field(SCAN, "Passive")
+}
+record(bo, "$(sys):$(sec):$(dev):Enbl_Alc") {
+        field(DESC, "$(dev) Alc off/on")
+        field(DTYP, "stream")
+        field(OUT, "@devKeysightSignalGenerator.proto setAlc $(sys):$(sec):$(dev)")
+        field(SCAN, "Passive")
+        field(ZNAM, "OFF")
+        field(ONAM, "ON")
+}
+record(bi, "$(sys):$(sec):$(dev):Opc") {
+        field(DESC, "$(dev) Alc off/on")
+        field(DTYP, "stream")
+        field(INP, "@devKeysightSignalGenerator.proto getOpc $(sys):$(sec):$(dev)")
+        field(SCAN, "1 second")
+        field(ZNAM, "Busy")
+        field(ONAM, "Ready")
+}
+

@@ -1,0 +1,17 @@
+# keysightSignalGenerator.substitutions
+# Template file for Tarla Devices
+# Mehmet Bozdogan 25/03/2018
+#
+# substitutions:
+# sys	- system
+# sec	- section
+# dev	- device
+# $(sys)-$(sec)-$(dev) - device port(devPort)
+#
+#
+##############################################################################
+file devKeysightSignalGenerator.template {
+	pattern { sys	sec	dev	drvhF	drvlF		drvhDb	drvlDb	}
+		{ TEST	TEST	SG01	20	0.000009	30	-20	}
+}
+
